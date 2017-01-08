@@ -8,38 +8,62 @@ using namespace std;
 template <typename T>
 class ArrayList {
     private:
-        const static int MAX_SIZE=100;
+        int maxSize;
         T* storage;
         int currentPosition;
         int size;
-
-        bool isEmpty(void);
-        bool isFull(void);
-        bool checkIndex(int index);
+    
+        bool verifyReferenceScope(int index);
+        bool isPossibleToAdd(int index);
 
     public:
         ArrayList();
+        ArrayList(int maxSize);
+        bool isEmpty(void);
+        bool isFull(void);
         void add(T item);
         void add(int index, T item);
         void set(int index, T item);
         T remove(int index);
         T remove(void);
         T getItem(int index);
+        T getItem(void);
         int getSize(void);
         int indexOf(T item);
+        int lastIndexOf(T item);
+    
         bool hasNext(void);
         T first(void);
         T next(void);
-        int getCurrentPosition(void);
         ~ArrayList();
 };
 
 template <typename T>
+bool ArrayList<T>::verifyReferenceScope(int index) {
+    return (index >= 0) && (index < size);
+}
+
+template <typename T>
+bool ArrayList<T>::isPossibleToAdd(int index) {
+    return !isFull() && ((size >= 0) && (index <= size));
+}
+
+template <typename T>
 ArrayList<T>::ArrayList() {
-    storage = new T[MAX_SIZE];
+    maxSize = 100;
+    storage = new T[maxSize];
     size = 0;
     currentPosition = -1;
 }
+
+template <typename T>
+ArrayList<T>::ArrayList(int maxSize) {
+    this->maxSize = maxSize;
+    storage = new T[maxSize];
+    size = 0;
+    currentPosition = -1;
+}
+
 
 template <typename T>
 ArrayList<T>::~ArrayList() {
@@ -53,17 +77,12 @@ bool ArrayList<T>::isEmpty(void) {
 
 template <typename T>
 bool ArrayList<T>::isFull(void) {
-    return size == MAX_SIZE;
-}
-
-template <typename T>
-bool ArrayList<T>::checkIndex(int index) {
-    return (size >= 0) && (index <= size);
+    return size == maxSize;
 }
 
 template <typename T>
 void ArrayList<T>::add(int index, T item) {
-    if(isFull() || !checkIndex(index)) {
+    if(!isPossibleToAdd(index)) {
         printf("저장이 불가능합니다.\n");
         return;
     }
@@ -73,7 +92,6 @@ void ArrayList<T>::add(int index, T item) {
     }
     
     storage[index] = item;
-    currentPosition = index;
     size++;
     return;
 }
@@ -85,19 +103,18 @@ void ArrayList<T>::add(T item) {
 
 template <typename T>
 void ArrayList<T>::set(int index, T item) {
-    if(!checkIndex(index) || index == size) {
+    if(!verifyReferenceScope(index)) {
         printf("값을 변경할 수 없습니다.\n");
         return;
     }
     
     storage[index] = item;
-    currentPosition = index;
     return;
 }
 
 template <typename T>
 T ArrayList<T>::remove(int index) {
-    if(!checkIndex(index) || index == size) {
+    if(!verifyReferenceScope(index)) {
         fprintf(stderr, "잘못된 위치를 참조하여 삭제에 실패했습니다.\n");
         exit(1);
     }
@@ -107,7 +124,9 @@ T ArrayList<T>::remove(int index) {
         storage[i] = storage[i+1];
     }
     
-    currentPosition = index - 1;
+    if(index < currentPosition || index == size - 1) {
+        currentPosition--;
+    }
     size--;
     return target;
 }
@@ -119,13 +138,17 @@ T ArrayList<T>::remove(void) {
 
 template <typename T>
 T ArrayList<T>::getItem(int index) {
-    if(!checkIndex(index) || index == size) {
+    if(!verifyReferenceScope(index)) {
         fprintf(stderr, "잘못된 위치를 참조하여 값을 가져올 수 없습니다.");
         exit(1);
     }
     
-    currentPosition = index;
     return storage[index];
+}
+
+template <typename T>
+T ArrayList<T>::getItem(void) {
+    return getItem(currentPosition);
 }
 
 template <typename T>
@@ -137,7 +160,17 @@ template <typename T>
 int ArrayList<T>::indexOf(T item) {
     for(int i = 0; i < size; i++) {
         if(storage[i] == item) {
-            currentPosition = i;
+            return i;
+        }
+    }
+    
+    return -1;
+}
+
+template <typename T>
+int ArrayList<T>::lastIndexOf(T item) {
+    for(int i = size - 1; i >= 0; i--) {
+        if(storage[i] == item) {
             return i;
         }
     }
@@ -170,11 +203,6 @@ T ArrayList<T>::first(void) {
     
     currentPosition = 0;
     return storage[currentPosition];
-}
-
-template <typename T>
-int ArrayList<T>::getCurrentPosition(void) {
-    return currentPosition;
 }
 
 #endif /* ArrayList_hpp */

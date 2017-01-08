@@ -19,18 +19,21 @@
 
 ### 연산
 
-1. add(item) ::= 리스트에 item을 저장한다.
-2. add(index, item) ::= 리스트 index위치에 item을 저장한다.
-3. set(index, item) ::= 리스트 index위치에 있는 원소를 item으로 바꾼다.
-4. remove(index) ::= index위치에 있는 원소를 삭제한다. 삭제된 데이터는 반환된다.
-5. remove() ::= 최근에 반환된 원소를 삭제한다. 삭제된 데이터는 반환된다.
-6. getItem(index) ::= index위치에 있는 원소를 반환한다.
-7. getSize() ::= 리스트에 저장되어 있는 원소의 수를 반환한다.
-8. indexOf(item) ::= 리스트에서 item이 저장된 위치를 반환한다. 맨 처음에 있는 데이터의 위치가 반환된다.
-9. hasNext() ::= 아직 방문하지 않은 원소가 있으면 true를 반환한다.
-10. first() ::= 처음 원소를 반환한다.
-11. next() ::= 다음 원소를 반환한다.
-12. getCurrentPosition ::= 현재 접근하고 있는 원소의 위치를 반환한다.
+1. isEmpty() ::= 리스트가 공백 상태면 true를 반환
+2. isFull() ::= 리스트가 가득차 있으면 true를 반환
+3. add(item) ::= 리스트에 item을 저장한다.
+4. add(index, item) ::= 리스트 index위치에 item을 저장한다.
+5. set(index, item) ::= 리스트 index위치에 있는 원소를 item으로 바꾼다.
+6. remove(index) ::= index위치에 있는 원소를 삭제한다. 삭제된 데이터는 반환된다.
+7. remove() ::= 최근에 반환된 원소를 삭제한다. 삭제된 데이터는 반환된다.
+8. getItem(index) ::= index위치에 있는 원소를 반환한다.
+9. getItem() ::= 현재 탐색 위치의 원소를 반환한다.
+10. getSize() ::= 리스트에 저장되어 있는 원소의 수를 반환한다.
+11. indexOf(item) ::= 리스트에서 item이 저장된 위치를 반환한다. 맨 처음에 있는 데이터의 위치가 반환된다.
+12. lastIndexOf(item) ::= 리스트에서 item이 저장된 위치를 반환한다. 맨 뒤에 있는 데이터의 위치가 반환된다.
+13. hasNext() ::= 아직 방문하지 않은 원소가 있으면 true를 반환한다.
+14. first() ::= 처음 원소를 반환한다. 탐색 위치를 처음으로 설정한다.
+15. next() ::= 다음 원소를 반환한다. 탐색 위치가 다음으로 하나 증가한다.
 
 ---
 
