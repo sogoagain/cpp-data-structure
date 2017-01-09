@@ -19,6 +19,10 @@ class ArrayList {
     public:
         ArrayList();
         ArrayList(int maxSize);
+        ArrayList(const ArrayList<T>& copy);
+        ~ArrayList();
+        ArrayList<T>& operator=(const ArrayList<T>& reference);
+
         bool isEmpty(void);
         bool isFull(void);
         void add(T item);
@@ -35,7 +39,6 @@ class ArrayList {
         bool hasNext(void);
         T first(void);
         T next(void);
-        ~ArrayList();
 };
 
 template <typename T>
@@ -64,10 +67,35 @@ ArrayList<T>::ArrayList(int maxSize) {
     currentPosition = -1;
 }
 
+template <typename T>
+ArrayList<T>::ArrayList(const ArrayList<T>& copy) {
+    maxSize = copy.maxSize;
+    storage = new T[maxSize];
+    size = copy.size;
+    currentPosition = -1;
+
+    for(int i = 0; i < size; i++) {
+        storage[i] = copy.storage[i];
+    }
+}
 
 template <typename T>
 ArrayList<T>::~ArrayList() {
     delete []storage;
+}
+
+template <typename T>
+ArrayList<T>& ArrayList<T>::operator=(const ArrayList<T>& reference) {
+    delete []storage;
+    storage = new T[reference.maxSize];
+    size = reference.size;
+    currentPosition = -1;
+
+    for(int i = 0; i < size; i++) {
+        storage[i] = reference.storage[i];
+    }
+
+    return *this;
 }
 
 template <typename T>

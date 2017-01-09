@@ -1,4 +1,4 @@
-all: ArrayListTest
+all: listTestApp
 
-ArrayListTest: ArrayListTest.cpp ArrayList.hpp
-	g++ -o ArrayListTest ArrayListTest.cpp
+listTestApp: listTestApp.cpp ArrayList.hpp
+	g++ -o listTestApp listTestApp.cpp
