@@ -124,7 +124,7 @@ T ArrayList<T>::remove(int index) {
         storage[i] = storage[i+1];
     }
     
-    if(index < currentPosition || index == size - 1) {
+    if(index <= currentPosition) {
         currentPosition--;
     }
     size--;
