@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "ArrayList.hpp"
+#include "ArrayList/ArrayList.hpp"
 using namespace std;
 
 class Point {
