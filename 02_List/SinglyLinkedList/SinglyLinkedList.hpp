@@ -16,7 +16,6 @@ class LinkedList {
             
             public:
                 Node(void) {
-                    data = NULL;
                     link = NULL;
                 }
                 Node(T item, Node* next) {
@@ -66,6 +65,24 @@ LinkedList<T>::LinkedList() {
 
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& copy) {
+    Node* tail;
+    Node* search;
+
+    head = new Node();  // 더미노드 추가
+    tail = head;
+    search = copy.head;
+    size = 0;
+
+    while(search->link != NULL) {
+        search = search->link;
+        tail->link = new Node(search->data, NULL);
+        tail = tail->link;
+        size++;
+    }
+
+    current = head;
+    previous = NULL;
+    compare = NULL;
 }
 
 template <typename T>
