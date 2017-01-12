@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ArrayList/ArrayList.hpp"
+#include "SinglyLinkedList/SinglyLinkedList.hpp"
 using namespace std;
 
 class Point {
@@ -27,11 +28,12 @@ class Point {
         }
 };
 
-typedef ArrayList<Point*> List;
+// typedef ArrayList<Point*> List;
+typedef LinkedList<Point*> List;
 
 int main() {
     List list;
-    
+
     srand(time(NULL));
     for(int i = 0; i < 10; i++) {
         list.add(new Point(rand()%3, rand()%3));
