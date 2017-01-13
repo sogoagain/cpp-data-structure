@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <iostream>
+#include <algorithm>
 using namespace std;
 
 template <typename T>
@@ -30,6 +31,8 @@ class LinkedList {
         int size;
         int (*compare)(T item1, T item2);
 
+        bool isPossibleToAdd(int index);
+
     public:
         LinkedList();
         LinkedList(const LinkedList<T>& copy);
@@ -52,6 +55,11 @@ class LinkedList {
         T first(void);
         T next(void);
 };
+
+template <typename T>
+bool LinkedList<T>::isPossibleToAdd(int index) {
+    return ((size >= 0) && (index <= size));
+}
 
 template <typename T>
 LinkedList<T>::LinkedList() {
@@ -87,11 +95,20 @@ LinkedList<T>::LinkedList(const LinkedList<T>& copy) {
 
 template <typename T>
 LinkedList<T>::~LinkedList() {
+    while(head->link != NULL) {
+        Node* temp = head->link;
+        head->link = temp->link;
+        delete temp;
+    }
     delete head;
 }
 
 template <typename T>
 LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& reference) {
+    LinkedList<T> temp = reference;
+    size = temp.getSize();
+    std::swap(temp.head, head);
+    return *this;
 }
 
 template <typename T>
@@ -101,23 +118,71 @@ bool LinkedList<T>::isEmpty(void) {
 
 template <typename T>
 void LinkedList<T>::add(int index, T item) {
+    if(!isPossibleToAdd(index)) {
+       printf("저장이 불가능합니다.\n");
+       return;
+    }
 
+    Node* search = head;
+    for(int i = 0; i < index; i++) {
+        search = search->link;
+    }
+
+    search->link = new Node(item, search->link);
+    size++;
+    return;
 }
 
 template <typename T>
 void LinkedList<T>::add(T item) {
     head->link = new Node(item, head->link);
     size++;
+    return;
 }
 
 template <typename T>
 void LinkedList<T>::set(int index, T item) {
+    if(!isPossibleToAdd(index)) {
+       printf("값을 변경할 수 없습니다.\n");
+       return;
+    }
 
+    Node* search = head->link;
+    for(int i = 0; i < index; i++) {
+        search = search->link;
+    }
+
+    search->data = item;
+    return;
 }
 
 template <typename T>
 T LinkedList<T>::remove(int index) {
+     if(isEmpty()) {
+        printf("삭제할 데이터가 없습니다.\n");
+        exit(1);
+    }
 
+    Node* search = head;
+    Node* target;
+    T deletedData;
+
+    for(int i = 0; i < index; i++) {
+        search = search->link;
+    }
+    target = search->link; 
+
+    deletedData = target->data;
+    search->link = target->link;
+
+    if(target == current) {
+        current = search;
+    }
+    
+    delete target;
+
+    size--;
+    return deletedData;
 }
 
 template <typename T>
@@ -140,12 +205,18 @@ T LinkedList<T>::remove(void) {
 
 template <typename T>
 T LinkedList<T>::getItem(int index) {
+    Node* search = head->link;
 
+    for(int i = 0; i < index; i++) {
+        search = search->link;
+    }
+
+    return search->data;
 }
 
 template <typename T>
 T LinkedList<T>::getItem(void) {
-
+    return current->data;
 }
 
 template <typename T>
@@ -155,7 +226,17 @@ int LinkedList<T>::getSize(void) {
 
 template <typename T>
 int LinkedList<T>::indexOf(T item) {
+    int index = 0;
+    Node* search = head;
 
+    while(search->link != NULL) {
+        search = search->link;
+        if(search->data == item) {
+            break;
+        }
+        index++;
+    }
+    return index;
 }
 
 template <typename T>

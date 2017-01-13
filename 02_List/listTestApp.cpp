@@ -72,17 +72,6 @@ int main() {
      }
     printf("---printf finished--\n");
 
-    printf("복사본 데이터 출력\n");
-    List copy = list;
-
-    printf("현재 데이터 수: %d\n", copy.getSize());
-
-    (copy.first())->print();
-     while(copy.hasNext()) {
-         (copy.next())->print();
-     }
-    printf("---printf finished--\n");
-
     // 메모리 정리
     if(!list.isEmpty()) {
         list.first();
