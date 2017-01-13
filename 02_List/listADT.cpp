@@ -40,6 +40,8 @@ int main() {
 
     printf("list1 9번째 위치에 99 저장\n");
     list1.add(9, 99);
+    printf("list1 2번째 위치값 99로 변경\n");
+    list1.set(2, 99);
     printf("list1\n");
     printf("현재 데이터 수: %d\n", list1.getSize());
 
@@ -72,7 +74,8 @@ int main() {
     printf("삭제된 값: %d\n",list1.remove(4));
     printf("list1의 5번째 값: %d\n", list1.getItem(5));
     printf("현재 탐색 중인 위치의 값: %d\n", list1.getItem());
-    printf("99의 위치: %d\n", list1.indexOf(99));
+    printf("99의 앞으로부터 위치: %d\n", list1.indexOf(99));
+    printf("4의 뒤로부터 위치: %d\n", list1.lastIndexOf(4));
 
     return 0;
 }

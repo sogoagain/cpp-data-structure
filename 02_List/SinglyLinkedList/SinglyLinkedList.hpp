@@ -232,16 +232,28 @@ int LinkedList<T>::indexOf(T item) {
     while(search->link != NULL) {
         search = search->link;
         if(search->data == item) {
-            break;
+            return index;
         }
         index++;
     }
-    return index;
+    return -1;
 }
 
 template <typename T>
 int LinkedList<T>::lastIndexOf(T item) {
+    int index = 0;
+    int result = -1;
+    Node* search = head;
 
+    while(search->link != NULL) {
+        search = search->link;
+        if(search->data == item) {
+            result = index;
+        }
+        index++;
+    }
+
+    return result;
 }
 
 template <typename T>
