@@ -1,4 +1,10 @@
-all: listTestApp
+all: listTestApp listADT
 
-listTestApp: listTestApp.cpp ArrayList/ArrayList.hpp SinglyLinkedList/SinglyLinkedList.hpp
+# header files
+HEADER = ArrayList/ArrayList.hpp SinglyLinkedList/SinglyLinkedList.hpp
+
+listTestApp: listTestApp.cpp $(HEADER)
 	g++ -o listTestApp listTestApp.cpp
+
+listADT: listADT.cpp $(HEADER)
+	g++ -o listADT listADT.cpp

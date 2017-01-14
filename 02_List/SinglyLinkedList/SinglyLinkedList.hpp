@@ -31,7 +31,20 @@ class LinkedList {
         int size;
         int (*compare)(T item1, T item2);
 
+        bool verifyReferenceScope(int index);
         bool isPossibleToAdd(int index);
+        Node* getNodeAt(int index)  {
+            if(!verifyReferenceScope(index)) {
+                fprintf(stderr, "index[%d] 노드를 참조할 수 없습니다.\n",index);
+                exit(EXIT_FAILURE);
+            }
+        
+            Node* search = head;
+            for(int i = 0; i <= index; i++) {
+                search = search->link;
+            }
+            return search;
+        }
 
     public:
         LinkedList();
@@ -57,9 +70,15 @@ class LinkedList {
 };
 
 template <typename T>
+bool LinkedList<T>::verifyReferenceScope(int index) {
+    return (index >= 0) && (index < size);
+}
+
+template <typename T>
 bool LinkedList<T>::isPossibleToAdd(int index) {
     return ((size >= 0) && (index <= size));
 }
+
 
 template <typename T>
 LinkedList<T>::LinkedList() {
@@ -119,15 +138,11 @@ bool LinkedList<T>::isEmpty(void) {
 template <typename T>
 void LinkedList<T>::add(int index, T item) {
     if(!isPossibleToAdd(index)) {
-       printf("저장이 불가능합니다.\n");
+        fprintf(stderr, "index[%d]에 저장이 불가능합니다.\n", index);
        return;
     }
 
-    Node* search = head;
-    for(int i = 0; i < index; i++) {
-        search = search->link;
-    }
-
+    Node* search = getNodeAt(index - 1);
     search->link = new Node(item, search->link);
     size++;
     return;
@@ -142,35 +157,26 @@ void LinkedList<T>::add(T item) {
 
 template <typename T>
 void LinkedList<T>::set(int index, T item) {
-    if(!isPossibleToAdd(index)) {
-       printf("값을 변경할 수 없습니다.\n");
+    if(!verifyReferenceScope(index)) {
+        fprintf(stderr, "index[%d]의 값을 변경할 수 없습니다.\n", index);
        return;
     }
 
-    Node* search = head->link;
-    for(int i = 0; i < index; i++) {
-        search = search->link;
-    }
-
+    Node* search = getNodeAt(index);
     search->data = item;
     return;
 }
 
 template <typename T>
 T LinkedList<T>::remove(int index) {
-     if(isEmpty()) {
-        printf("삭제할 데이터가 없습니다.\n");
-        exit(1);
+    if(!verifyReferenceScope(index)) {
+        fprintf(stderr, "index[%d]의 값을 삭제할 수 없습니다.\n", index);
+        exit(EXIT_FAILURE);
     }
 
-    Node* search = head;
-    Node* target;
+    Node* search = getNodeAt(index - 1);
+    Node* target = search->link;
     T deletedData;
-
-    for(int i = 0; i < index; i++) {
-        search = search->link;
-    }
-    target = search->link; 
 
     deletedData = target->data;
     search->link = target->link;
@@ -187,9 +193,9 @@ T LinkedList<T>::remove(int index) {
 
 template <typename T>
 T LinkedList<T>::remove(void) {
-    if(isEmpty()) {
-        printf("삭제할 데이터가 없습니다.\n");
-        exit(1);
+    if(current == head) {
+        fprintf(stderr, "first(), next()를 통해 참조 위치를 설정하세요");
+        exit(EXIT_FAILURE);
     }
 
     T target;
@@ -205,12 +211,7 @@ T LinkedList<T>::remove(void) {
 
 template <typename T>
 T LinkedList<T>::getItem(int index) {
-    Node* search = head->link;
-
-    for(int i = 0; i < index; i++) {
-        search = search->link;
-    }
-
+    Node* search = getNodeAt(index);
     return search->data;
 }
 
@@ -264,8 +265,8 @@ bool LinkedList<T>::hasNext(void) {
 template <typename T>
 T LinkedList<T>::next(void) {
     if(!hasNext()) {
-        printf("참조할 다음 데이터가 없습니다.\n");
-        exit(1);
+        fprintf(stderr, "참조할 다음 데이터가 없습니다.\n");
+        exit(EXIT_FAILURE);
     }
 
     previous = current;
@@ -277,8 +278,8 @@ T LinkedList<T>::next(void) {
 template <typename T>
 T LinkedList<T>::first(void) {
     if(isEmpty()) {
-        printf("저장된 데이터가 없습니다.\n");
-        exit(1);
+        fprintf(stderr, "저장된 데이터가 없습니다.\n");
+        exit(EXIT_FAILURE);
     }
 
     previous = head;

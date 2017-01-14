@@ -15,6 +15,7 @@ class ArrayList {
     
         bool verifyReferenceScope(int index);
         bool isPossibleToAdd(int index);
+        bool isFull(void);
 
     public:
         ArrayList();
@@ -24,7 +25,6 @@ class ArrayList {
         ArrayList<T>& operator=(const ArrayList<T>& reference);
 
         bool isEmpty(void);
-        bool isFull(void);
         void add(T item);
         void add(int index, T item);
         void set(int index, T item);
@@ -49,6 +49,11 @@ bool ArrayList<T>::verifyReferenceScope(int index) {
 template <typename T>
 bool ArrayList<T>::isPossibleToAdd(int index) {
     return !isFull() && ((size >= 0) && (index <= size));
+}
+
+template <typename T>
+bool ArrayList<T>::isFull(void) {
+    return size == maxSize;
 }
 
 template <typename T>
@@ -104,14 +109,9 @@ bool ArrayList<T>::isEmpty(void) {
 }
 
 template <typename T>
-bool ArrayList<T>::isFull(void) {
-    return size == maxSize;
-}
-
-template <typename T>
 void ArrayList<T>::add(int index, T item) {
     if(!isPossibleToAdd(index)) {
-        printf("저장이 불가능합니다.\n");
+        fprintf(stderr, "index[%d]에 저장이 불가능합니다.\n", index);
         return;
     }
     
@@ -132,7 +132,7 @@ void ArrayList<T>::add(T item) {
 template <typename T>
 void ArrayList<T>::set(int index, T item) {
     if(!verifyReferenceScope(index)) {
-        printf("값을 변경할 수 없습니다.\n");
+        fprintf(stderr, "index[%d]의 값을 변경할 수 없습니다.\n", index);
         return;
     }
     
@@ -143,8 +143,8 @@ void ArrayList<T>::set(int index, T item) {
 template <typename T>
 T ArrayList<T>::remove(int index) {
     if(!verifyReferenceScope(index)) {
-        fprintf(stderr, "잘못된 위치를 참조하여 삭제에 실패했습니다.\n");
-        exit(1);
+        fprintf(stderr, "index[%d]의 값을 삭제할 수 없습니다.\n", index);
+        exit(EXIT_FAILURE);
     }
     
     T target = storage[index];
@@ -161,6 +161,10 @@ T ArrayList<T>::remove(int index) {
 
 template <typename T>
 T ArrayList<T>::remove(void) {
+    if(currentPosition == -1) {
+        fprintf(stderr, "first(), next()를 통해 참조 위치를 설정하세요");
+        exit(EXIT_FAILURE);
+    }
     return remove(currentPosition);
 }
 
@@ -168,7 +172,7 @@ template <typename T>
 T ArrayList<T>::getItem(int index) {
     if(!verifyReferenceScope(index)) {
         fprintf(stderr, "잘못된 위치를 참조하여 값을 가져올 수 없습니다.");
-        exit(1);
+        exit(EXIT_FAILURE);
     }
     
     return storage[index];
@@ -214,8 +218,8 @@ bool ArrayList<T>::hasNext(void) {
 template <typename T>
 T ArrayList<T>::next(void) {
     if(!hasNext()) {
-        fprintf(stderr, "리스트에 다음 항목이 없습니다.\n");
-        exit(1);
+        fprintf(stderr, "참조할 다음 데이터가 없습니다.\n");
+        exit(EXIT_FAILURE);
     }
     
     currentPosition++;
@@ -225,8 +229,8 @@ T ArrayList<T>::next(void) {
 template <typename T>
 T ArrayList<T>::first(void) {
     if(isEmpty()) {
-        fprintf(stderr, "리스트가 공백 상태입니다.\n");
-        exit(1);
+        fprintf(stderr, "저장된 데이터가 없습니다.\n");
+        exit(EXIT_FAILURE);
     }
     
     currentPosition = 0;
