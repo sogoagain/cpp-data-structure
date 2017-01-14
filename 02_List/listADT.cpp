@@ -7,6 +7,16 @@ using namespace std;
 //typedef ArrayList<int> List;
 typedef LinkedList<int> List;
 
+int compare(const void* previous , const void* after) {
+    if(*(int*)previous > *(int*)after) {
+        return -1;
+    } else if(*(int*)previous == *(int*)after) {
+        return 0;
+    } else {
+        return 1;
+    }
+}
+
 int main() {
     List list1, list2;
     printf("list1.isEmpty(): %s\n", list1.isEmpty() ? "TRUE" : "FALSE");
@@ -14,7 +24,7 @@ int main() {
     printf("list1.add()\n");
     srand(time(NULL));
     for(int i = 0; i < 10; i++) {
-        list1.add(rand()%3);
+        list1.add(rand()%10);
     }
 
     // 데이터 출력
@@ -93,5 +103,29 @@ int main() {
         printf("%d ", list2.getItem(i));
     }
     printf("\n");
+
+    printf("list3.sort()\n");
+    list3.sort(compare);
+
+    printf("list3 print\n");
+    printf("%d ", list3.first());
+     while(list3.hasNext()) {
+         printf("%d ", list3.next());
+     }
+    printf("\n"); 
+    printf("---printf finished--\n");
+
+    printf("List list4\n");
+    List list4;
+    printf("list4.sort(compare)\n");
+
+    printf("list4 print\n");
+    printf("%d ", list4.first());
+     while(list4.hasNext()) {
+         printf("%d ", list4.next());
+     }
+    printf("\n"); 
+    printf("---printf finished--\n");
+    
     return 0;
 }

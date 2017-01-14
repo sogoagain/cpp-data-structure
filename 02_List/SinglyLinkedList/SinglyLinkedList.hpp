@@ -29,10 +29,11 @@ class LinkedList {
         Node* current;
         Node* previous;
         int size;
-        int (*compare)(T item1, T item2);
+        int (*compare)(const void*, const void*);
 
         bool verifyReferenceScope(int index);
         bool isPossibleToAdd(int index);
+        void addToSort(T item);
         Node* getNodeAt(int index)  {
             if(!verifyReferenceScope(index)) {
                 fprintf(stderr, "index[%d] 노드를 참조할 수 없습니다.\n",index);
@@ -67,6 +68,7 @@ class LinkedList {
         bool hasNext(void);
         T first(void);
         T next(void);
+        void sort(int (*compare)(const void *, const void *));
 };
 
 template <typename T>
@@ -79,6 +81,21 @@ bool LinkedList<T>::isPossibleToAdd(int index) {
     return ((size >= 0) && (index <= size));
 }
 
+template <typename T>
+void LinkedList<T>::addToSort(T item) {
+    if(compare == NULL) {
+        fprintf(stderr, "비교 함수가 등록되지 않아 정렬을 중단합니다.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    Node* search = head;
+    while((search->link != NULL) && (compare((void*)&item, (void*)&(search->link->data)) >= 0)) {
+        search = search->link; 
+    }
+    search->link = new Node(item, search->link);
+    size++;
+    return;
+}
 
 template <typename T>
 LinkedList<T>::LinkedList() {
@@ -286,6 +303,21 @@ T LinkedList<T>::first(void) {
     current = head->link;
 
     return current->data;
+}
+
+template <typename T>
+void LinkedList<T>::sort(int (*compare)(const void *, const void *)) {
+    LinkedList temp;
+//    this->compare = compare;
+    temp.compare = compare;
+    
+    Node* search = head;
+    while(search->link != NULL) {
+        search = search->link;
+        temp.addToSort(search->data); 
+    }
+
+    std::swap(temp.head, head);
 }
 
 #endif /* SinglyLinkedList_hpp */
