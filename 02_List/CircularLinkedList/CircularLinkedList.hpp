@@ -87,30 +87,34 @@ bool LinkedList<T>::isPossibleToAdd(int index) {
 
 template <typename T>
 void LinkedList<T>::addToSort(T item) {
+    bool changeTail = true;
+    
     if(compare == NULL) {
         fprintf(stderr, "비교 함수가 등록되지 않아 정렬을 중단합니다.\n");
         exit(EXIT_FAILURE);
     }
-
+    
     Node* search = tail;
     do {
         if(search == NULL) {
+            changeTail = false;
             break;
         }
         if(compare((void*)&item, (void*)&(search->link->data)) < 0) {
+            changeTail = false;
             break;
         }
-        search = search->link; 
+        search = search->link;
     } while(search != tail);
-
+    
     if(search == NULL) {
         tail = new Node(item, NULL);
         tail->link = tail;
     } else {
         search->link = new Node(item, search->link);
     }
-
-    if(search == tail) {
+    
+    if(changeTail) {
         tail = tail->link;
     }
     size++;
@@ -376,7 +380,7 @@ void LinkedList<T>::sort(int (*compare)(const void *, const void *)) {
     }
 
     LinkedList temp;
-    this->compare = compare;
+//    this->compare = compare;
     temp.compare = compare;
     
     Node* search = tail;
