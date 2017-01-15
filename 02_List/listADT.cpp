@@ -120,7 +120,7 @@ int main() {
 
     printf("list3.getSize(): %d\n", list3.getSize());
     printf("list3.getItem()\n");
-    for(int i = 0; i < list3.getSize()-1; i++) {
+    for(int i = 0; i < list3.getSize()*2; i++) {
         printf("%d ", list3.getItem(i));
     }
     printf("\n");
@@ -143,11 +143,13 @@ int main() {
 
     printf("list4 print\n");
     printf("%d ", list4.first());
-    for(int i = 0; i < list4.getSize()*2; i++) {
+    for(int i = 0; i < list4.getSize()*2 - 1; i++) {
          printf("%d ", list4.next());
      }
     printf("\n"); 
     printf("---printf finished--\n");
+
+    printf("list4.getItem(124): %d\n",list4.getItem(123));
     
     return 0;
 }

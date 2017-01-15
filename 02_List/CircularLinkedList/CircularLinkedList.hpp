@@ -38,12 +38,12 @@ class LinkedList {
             if(index == -1 || index == size - 1) {
                 return tail;
             }
-            
-            if(!verifyReferenceScope(index)) {
-                fprintf(stderr, "index[%d] 노드를 참조할 수 없습니다.\n",index);
-                exit(EXIT_FAILURE);
+            /* 
+            index %= size;
+            if(index < 0) {
+                index += size;
             }
-
+            */
             Node* search = tail;
             for(int i = 0; i <= index; i++) {
                 search = search->link;
