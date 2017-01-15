@@ -1,7 +1,7 @@
 all: listTestApp listADT
 
 # header files
-HEADER = ArrayList/ArrayList.hpp SinglyLinkedList/SinglyLinkedList.hpp
+HEADER = ArrayList/ArrayList.hpp SinglyLinkedList/SinglyLinkedList.hpp CircularLinkedList/CircularLinkedList.hpp
 
 listTestApp: listTestApp.cpp $(HEADER)
 	g++ -o listTestApp listTestApp.cpp

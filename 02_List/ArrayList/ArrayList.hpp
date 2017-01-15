@@ -2,6 +2,7 @@
 #define ArrayList_hpp
 
 #include <stdio.h>
+#include <algorithm>
 #include <iostream>
 using namespace std;
 
@@ -12,6 +13,7 @@ class ArrayList {
         T* storage;
         int currentPosition;
         int size;
+        int (*compare)(const void*, const void*);
     
         bool verifyReferenceScope(int index);
         bool isPossibleToAdd(int index);
@@ -39,6 +41,7 @@ class ArrayList {
         bool hasNext(void);
         T first(void);
         T next(void);
+        void sort(int (*compare)(const void *, const void *));
 };
 
 template <typename T>
@@ -48,7 +51,7 @@ bool ArrayList<T>::verifyReferenceScope(int index) {
 
 template <typename T>
 bool ArrayList<T>::isPossibleToAdd(int index) {
-    return !isFull() && ((size >= 0) && (index <= size));
+    return !isFull() && ((index >= 0) && (index <= size));
 }
 
 template <typename T>
@@ -91,14 +94,11 @@ ArrayList<T>::~ArrayList() {
 
 template <typename T>
 ArrayList<T>& ArrayList<T>::operator=(const ArrayList<T>& reference) {
-    delete []storage;
-    storage = new T[reference.maxSize];
+    ArrayList temp = reference;
+    std::swap(temp.storage, storage);
+    maxSize = reference.maxSize;
     size = reference.size;
     currentPosition = -1;
-
-    for(int i = 0; i < size; i++) {
-        storage[i] = reference.storage[i];
-    }
 
     return *this;
 }
@@ -235,6 +235,12 @@ T ArrayList<T>::first(void) {
     
     currentPosition = 0;
     return storage[currentPosition];
+}
+
+template <typename T>
+void ArrayList<T>::sort(int (*compare)(const void *, const void *)) {
+    this->compare = compare; 
+    qsort(storage, size, sizeof(T), this->compare);
 }
 
 #endif /* ArrayList_hpp */
