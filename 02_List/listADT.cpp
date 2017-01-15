@@ -139,6 +139,7 @@ int main() {
     printf("List list4 = list1\n");
     List list4 = list1;
     printf("list4.sort(compare)\n");
+    list4.sort(compare);
 
     printf("list4 print\n");
     printf("%d ", list4.first());
