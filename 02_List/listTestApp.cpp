@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "ArrayList/ArrayList.hpp"
-#include "SinglyLinkedList/SinglyLinkedList.hpp"
+//#include "SinglyLinkedList/SinglyLinkedList.hpp"
+#include "CircularLinkedList/CircularLinkedList.hpp"
 using namespace std;
 
 class Point {
@@ -43,9 +44,9 @@ int main() {
     printf("현재 데이터 수: %d\n", list.getSize());
 
     (list.first())->print();
-     while(list.hasNext()) {
+    for(int i = 0; (i<list.getSize() - 1) && (list.hasNext()); i++) {
          (list.next())->print();
-     }
+    }
     printf("---printf finished--\n");
 
     /* 데이터 삭제 */
@@ -56,7 +57,7 @@ int main() {
     if(*(list.first()) == *comparePosition) {
         delete(list.remove());
     }
-    while(list.hasNext()) {
+    for(int i = 0; (i<list.getSize() - 1) && (list.hasNext()); i++) {
         if(*(list.next()) == *comparePosition) {
             delete(list.remove());
         }
@@ -67,9 +68,9 @@ int main() {
     printf("현재 데이터 수: %d\n", list.getSize());
 
     (list.first())->print();
-     while(list.hasNext()) {
+    for(int i = 0; (i<list.getSize() - 1) && (list.hasNext()); i++) {
          (list.next())->print();
-     }
+    }
     printf("---printf finished--\n");
 
     // 메모리 정리
@@ -77,7 +78,7 @@ int main() {
         list.first();
         delete(list.remove());
 
-        while(list.hasNext()) {
+        for(int i = 0; (i<list.getSize() - 1) && (list.hasNext()); i++) {
             list.next();
             delete(list.remove());
         }
