@@ -2,7 +2,8 @@
 #include <stdlib.h>
 #include "ArrayList/ArrayList.hpp"
 //#include "SinglyLinkedList/SinglyLinkedList.hpp"
-#include "CircularLinkedList/CircularLinkedList.hpp"
+//#include "CircularLinkedList/CircularLinkedList.hpp"
+#include "DoublyLinkedList/DoublyLinkedList.hpp"
 using namespace std;
 
 class Point {

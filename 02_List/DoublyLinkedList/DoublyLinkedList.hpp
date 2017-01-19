@@ -1,5 +1,5 @@
-#ifndef SinglyLinkedList_hpp
-#define SinglyLinkedList_hpp
+#ifndef DoublyLinkedList_hpp
+#define DoublyLinkedList_hpp
 
 #include <stdio.h>
 #include <iostream>
@@ -13,21 +13,24 @@ class LinkedList {
             friend class LinkedList;
             private:
                 T data;
-                Node* link;
+                Node* leftLink;
+                Node* rightLink;
             
             public:
                 Node(void) {
-                    link = NULL;
+                    leftLink = NULL;
+                    rightLink = NULL;
                 }
-                Node(T item, Node* next) {
+                Node(T item, Node* previous, Node* next) {
                     data = item;
-                    link = next;
+                    leftLink = previous;
+                    rightLink = next;
                 }
         };
 
         Node* head;
+        Node* tail;
         Node* current;
-        Node* previous;
         int size;
         int (*compare)(const void*, const void*);
 
@@ -37,17 +40,28 @@ class LinkedList {
         Node* getNodeAt(int index)  {
             if(index == -1) {
                 return head;
+            } else if(index == size) {
+                return tail;
             }
-
+               
             if(!verifyReferenceScope(index)) {
                 fprintf(stderr, "index[%d] 노드를 참조할 수 없습니다.\n",index);
                 exit(EXIT_FAILURE);
             }
-        
-            Node* search = head;
-            for(int i = 0; i <= index; i++) {
-                search = search->link;
-            }
+            Node* search;
+
+            if(2*index - size < 0) {
+                search = head;
+                for(int i = 0; i <= index; i++) {
+                    search = search->rightLink;
+                }
+             } else {
+                search = tail;
+                for(int i = size - 1; i >= index; i--) {
+                    search = search->leftLink;
+                }
+             }
+            
             return search;
         }
 
@@ -93,10 +107,12 @@ void LinkedList<T>::addToSort(T item) {
     }
 
     Node* search = head;
-    while((search->link != NULL) && (compare((void*)&item, (void*)&(search->link->data)) >= 0)) {
-        search = search->link; 
+    while((search->rightLink != tail) && (compare((void*)&item, (void*)&(search->rightLink->data)) >= 0)) {
+        search = search->rightLink; 
     }
-    search->link = new Node(item, search->link);
+
+    search->rightLink->leftLink = new Node(item, search, search->rightLink);
+    search->rightLink = search->rightLink->leftLink;
     size++;
     return;
 }
@@ -104,40 +120,45 @@ void LinkedList<T>::addToSort(T item) {
 template <typename T>
 LinkedList<T>::LinkedList() {
     head = new Node();  // 더미노드 추가
-
+    tail = new Node();
+    head->leftLink = NULL;
+    head->rightLink = tail;
+    tail->leftLink = head;
+    tail->rightLink = NULL;
+    
     current = head;
-    previous = NULL;
     size = 0;
     compare = NULL;
 }
 
 template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& copy) {
-    Node* tail;
-    Node* search;
-
     head = new Node();  // 더미노드 추가
-    tail = head;
-    search = copy.head;
-    size = 0;
+    tail = new Node();
+    head->leftLink = NULL;
+    head->rightLink = tail;
+    tail->leftLink = head;
+    tail->rightLink = NULL;
 
-    while(search->link != NULL) {
-        search = search->link;
-        tail->link = new Node(search->data, NULL);
-        tail = tail->link;
+    Node* search = copy.head;
+    Node* tracking = head;
+
+    size = 0;
+    while(search->rightLink != copy.tail) {
+        search = search->rightLink;
+        tracking->rightLink->leftLink = new Node(search->data, tracking, tracking->rightLink);
+        tracking->rightLink = tracking->rightLink->leftLink;
         size++;
     }
-
     current = head;
-    previous = NULL;
     compare = NULL;
 }
 
 template <typename T>
 LinkedList<T>::~LinkedList() {
-    while(head->link != NULL) {
-        Node* temp = head->link;
-        head->link = temp->link;
+    while(head->rightLink != NULL) {
+        Node* temp = head->rightLink;
+        head->rightLink = temp->rightLink;
         delete temp;
     }
     delete head;
@@ -148,12 +169,13 @@ LinkedList<T>& LinkedList<T>::operator=(const LinkedList<T>& reference) {
     LinkedList<T> temp = reference;
     size = temp.getSize();
     std::swap(temp.head, head);
+    std::swap(temp.tail, tail);
     return *this;
 }
 
 template <typename T>
 bool LinkedList<T>::isEmpty(void) {
-    return (head->link == NULL);
+    return (head->rightLink == NULL);
 }
 
 template <typename T>
@@ -164,14 +186,16 @@ void LinkedList<T>::add(int index, T item) {
     }
 
     Node* search = getNodeAt(index - 1);
-    search->link = new Node(item, search->link);
+    search->rightLink->leftLink = new Node(item, search, search->rightLink);
+    search->rightLink = search->rightLink->leftLink;
     size++;
     return;
 }
 
 template <typename T>
 void LinkedList<T>::add(T item) {
-    head->link = new Node(item, head->link);
+    tail->leftLink->rightLink = new Node(item, tail->leftLink, tail);
+    tail->leftLink = tail->leftLink->rightLink;
     size++;
     return;
 }
@@ -195,15 +219,15 @@ T LinkedList<T>::remove(int index) {
         exit(EXIT_FAILURE);
     }
 
-    Node* search = getNodeAt(index - 1);
-    Node* target = search->link;
-    T deletedData;
+    Node* target = getNodeAt(index);
+    T deletedData = target->data;
 
-    deletedData = target->data;
-    search->link = target->link;
+    target->leftLink->rightLink = target->rightLink;
+    target->rightLink->leftLink = target->leftLink;
+    
 
     if(target == current) {
-        current = search;
+        current = target->leftLink;
     }
     
     delete target;
@@ -219,15 +243,18 @@ T LinkedList<T>::remove(void) {
         exit(EXIT_FAILURE);
     }
 
-    T target;
-    target = current->data;
-    previous->link = current->link;
-    
-    delete current;
-    current = previous;
+    Node* target = current;
+    T deletedData = target->data;
+
+    target->leftLink->rightLink = target->rightLink;
+    target->rightLink->leftLink = target->leftLink;
+
+    current = target->leftLink;
+
+    delete target;
 
     size--;
-    return target;
+    return deletedData;
 }
 
 template <typename T>
@@ -251,8 +278,8 @@ int LinkedList<T>::indexOf(T item) {
     int index = 0;
     Node* search = head;
 
-    while(search->link != NULL) {
-        search = search->link;
+    while(search->rightLink != tail) {
+        search = search->rightLink;
         if(search->data == item) {
             return index;
         }
@@ -267,8 +294,8 @@ int LinkedList<T>::lastIndexOf(T item) {
     int result = -1;
     Node* search = head;
 
-    while(search->link != NULL) {
-        search = search->link;
+    while(search->rightLink != tail) {
+        search = search->rightLink;
         if(search->data == item) {
             result = index;
         }
@@ -280,7 +307,7 @@ int LinkedList<T>::lastIndexOf(T item) {
 
 template <typename T>
 bool LinkedList<T>::hasNext(void) {
-    return (current->link != NULL);
+    return (current->rightLink != NULL);
 }
 
 template <typename T>
@@ -289,9 +316,7 @@ T LinkedList<T>::next(void) {
         fprintf(stderr, "참조할 다음 데이터가 없습니다.\n");
         exit(EXIT_FAILURE);
     }
-
-    previous = current;
-    current = current->link;
+    current = current->rightLink;
 
     return current->data;
 }
@@ -303,8 +328,7 @@ T LinkedList<T>::first(void) {
         exit(EXIT_FAILURE);
     }
 
-    previous = head;
-    current = head->link;
+    current = head->rightLink;
 
     return current->data;
 }
@@ -316,12 +340,13 @@ void LinkedList<T>::sort(int (*compare)(const void *, const void *)) {
     temp.compare = compare;
     
     Node* search = head;
-    while(search->link != NULL) {
-        search = search->link;
+    while(search->rightLink != tail) {
+        search = search->rightLink;
         temp.addToSort(search->data); 
     }
 
     std::swap(temp.head, head);
+    std::swap(temp.tail, tail);
 }
 
-#endif /* SinglyLinkedList_hpp */
+#endif /* DoublyLinkedList_hpp */
