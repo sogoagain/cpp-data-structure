@@ -8,40 +8,40 @@ using namespace std;
 
 template <typename T>
 class ArrayList {
-    private:
-        int maxSize;
-        T* storage;
-        int currentPosition;
-        int size;
-        int (*compare)(const void*, const void*);
+private:
+    int maxSize;
+    T* storage;
+    int currentPosition;
+    int size;
+    int (*compare)(const void*, const void*);
     
-        bool verifyReferenceScope(int index);
-        bool isPossibleToAdd(int index);
-        bool isFull(void);
-
-    public:
-        ArrayList();
-        ArrayList(int maxSize);
-        ArrayList(const ArrayList<T>& copy);
-        ~ArrayList();
-        ArrayList<T>& operator=(const ArrayList<T>& reference);
-
-        bool isEmpty(void);
-        void add(T item);
-        void add(int index, T item);
-        void set(int index, T item);
-        T remove(int index);
-        T remove(void);
-        T getItem(int index);
-        T getItem(void);
-        int getSize(void);
-        int indexOf(T item);
-        int lastIndexOf(T item);
+    bool verifyReferenceScope(int index);
+    bool isPossibleToAdd(int index);
+    bool isFull(void);
     
-        bool hasNext(void);
-        T first(void);
-        T next(void);
-        void sort(int (*compare)(const void *, const void *));
+public:
+    ArrayList();
+    ArrayList(int maxSize);
+    ArrayList(const ArrayList<T>& copy);
+    ~ArrayList();
+    ArrayList<T>& operator=(const ArrayList<T>& reference);
+    
+    bool isEmpty(void);
+    void add(T item);
+    void add(int index, T item);
+    void set(int index, T item);
+    T remove(int index);
+    T remove(void);
+    T getItem(int index);
+    T getItem(void);
+    int getSize(void);
+    int indexOf(T item);
+    int lastIndexOf(T item);
+    
+    bool hasNext(void);
+    T first(void);
+    T next(void);
+    void sort(int (*compare)(const void *, const void *));
 };
 
 template <typename T>
@@ -81,7 +81,7 @@ ArrayList<T>::ArrayList(const ArrayList<T>& copy) {
     storage = new T[maxSize];
     size = copy.size;
     currentPosition = -1;
-
+    
     for(int i = 0; i < size; i++) {
         storage[i] = copy.storage[i];
     }
@@ -99,7 +99,7 @@ ArrayList<T>& ArrayList<T>::operator=(const ArrayList<T>& reference) {
     maxSize = reference.maxSize;
     size = reference.size;
     currentPosition = -1;
-
+    
     return *this;
 }
 
@@ -239,7 +239,7 @@ T ArrayList<T>::first(void) {
 
 template <typename T>
 void ArrayList<T>::sort(int (*compare)(const void *, const void *)) {
-    this->compare = compare; 
+    this->compare = compare;
     qsort(storage, size, sizeof(T), this->compare);
 }
 
