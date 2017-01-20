@@ -4,6 +4,7 @@
 //#include "SinglyLinkedList/SinglyLinkedList.hpp"
 //#include "CircularLinkedList/CircularLinkedList.hpp"
 #include "DoublyLinkedList/DoublyLinkedList.hpp"
+
 using namespace std;
 
 class Point {
@@ -33,7 +34,7 @@ class Point {
 // typedef ArrayList<Point*> List;
 typedef LinkedList<Point*> List;
 
-int main() {
+int main(int argc, char** argv) {
     List list;
 
     srand(time(NULL));
