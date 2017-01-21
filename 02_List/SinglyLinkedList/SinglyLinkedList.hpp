@@ -8,71 +8,71 @@ using namespace std;
 
 template <typename T>
 class LinkedList {
+private:
+    class Node {
+        friend class LinkedList;
     private:
-        class Node {
-            friend class LinkedList;
-            private:
-                T data;
-                Node* link;
-            
-            public:
-                Node(void) {
-                    link = NULL;
-                }
-                Node(T item, Node* next) {
-                    data = item;
-                    link = next;
-                }
-        };
-
-        Node* head;
-        Node* current;
-        Node* previous;
-        int size;
-        int (*compare)(const void*, const void*);
-
-        bool verifyReferenceScope(int index);
-        bool isPossibleToAdd(int index);
-        void addToSort(T item);
-        Node* getNodeAt(int index)  {
-            if(index == -1) {
-                return head;
-            }
-
-            if(!verifyReferenceScope(index)) {
-                fprintf(stderr, "index[%d] 노드를 참조할 수 없습니다.\n",index);
-                exit(EXIT_FAILURE);
-            }
+        T data;
+        Node* link;
         
-            Node* search = head;
-            for(int i = 0; i <= index; i++) {
-                search = search->link;
-            }
-            return search;
-        }
-
     public:
-        LinkedList();
-        LinkedList(const LinkedList<T>& copy);
-        ~LinkedList();
-        LinkedList<T>& operator=(const LinkedList<T>& reference);
-
-        bool isEmpty(void);
-        void add(T item);
-        void add(int index, T item);
-        void set(int index, T item);
-        T remove(int index);
-        T remove(void);
-        T getItem(int index);
-        T getItem(void);
-        int getSize(void);
-        int indexOf(T item);
-        int lastIndexOf(T item);
+        Node(void) {
+            link = NULL;
+        }
+        Node(T item, Node* next) {
+            data = item;
+            link = next;
+        }
+    };
     
-        bool hasNext(void);
-        T first(void);
-        T next(void);
-        void sort(int (*compare)(const void *, const void *));
+    Node* head;
+    Node* current;
+    Node* previous;
+    int size;
+    int (*compare)(const void*, const void*);
+    
+    bool verifyReferenceScope(int index);
+    bool isPossibleToAdd(int index);
+    void addToSort(T item);
+    Node* getNodeAt(int index)  {
+        if(index == -1) {
+            return head;
+        }
+        
+        if(!verifyReferenceScope(index)) {
+            fprintf(stderr, "index[%d] 노드를 참조할 수 없습니다.\n",index);
+            exit(EXIT_FAILURE);
+        }
+        
+        Node* search = head;
+        for(int i = 0; i <= index; i++) {
+            search = search->link;
+        }
+        return search;
+    }
+    
+public:
+    LinkedList();
+    LinkedList(const LinkedList<T>& copy);
+    ~LinkedList();
+    LinkedList<T>& operator=(const LinkedList<T>& reference);
+    
+    bool isEmpty(void);
+    void add(T item);
+    void add(int index, T item);
+    void set(int index, T item);
+    T remove(int index);
+    T remove(void);
+    T getItem(int index);
+    T getItem(void);
+    int getSize(void);
+    int indexOf(T item);
+    int lastIndexOf(T item);
+    
+    bool hasNext(void);
+    T first(void);
+    T next(void);
+    void sort(int (*compare)(const void *, const void *));
 };
 
 template <typename T>
@@ -91,10 +91,10 @@ void LinkedList<T>::addToSort(T item) {
         fprintf(stderr, "비교 함수가 등록되지 않아 정렬을 중단합니다.\n");
         exit(EXIT_FAILURE);
     }
-
+    
     Node* search = head;
     while((search->link != NULL) && (compare((void*)&item, (void*)&(search->link->data)) >= 0)) {
-        search = search->link; 
+        search = search->link;
     }
     search->link = new Node(item, search->link);
     size++;
@@ -104,7 +104,7 @@ void LinkedList<T>::addToSort(T item) {
 template <typename T>
 LinkedList<T>::LinkedList() {
     head = new Node();  // 더미노드 추가
-
+    
     current = head;
     previous = NULL;
     size = 0;
@@ -115,19 +115,19 @@ template <typename T>
 LinkedList<T>::LinkedList(const LinkedList<T>& copy) {
     Node* tail;
     Node* search;
-
+    
     head = new Node();  // 더미노드 추가
     tail = head;
     search = copy.head;
     size = 0;
-
+    
     while(search->link != NULL) {
         search = search->link;
         tail->link = new Node(search->data, NULL);
         tail = tail->link;
         size++;
     }
-
+    
     current = head;
     previous = NULL;
     compare = NULL;
@@ -160,9 +160,9 @@ template <typename T>
 void LinkedList<T>::add(int index, T item) {
     if(!isPossibleToAdd(index)) {
         fprintf(stderr, "index[%d]에 저장이 불가능합니다.\n", index);
-       return;
+        return;
     }
-
+    
     Node* search = getNodeAt(index - 1);
     search->link = new Node(item, search->link);
     size++;
@@ -180,9 +180,9 @@ template <typename T>
 void LinkedList<T>::set(int index, T item) {
     if(!verifyReferenceScope(index)) {
         fprintf(stderr, "index[%d]의 값을 변경할 수 없습니다.\n", index);
-       return;
+        return;
     }
-
+    
     Node* search = getNodeAt(index);
     search->data = item;
     return;
@@ -194,20 +194,20 @@ T LinkedList<T>::remove(int index) {
         fprintf(stderr, "index[%d]의 값을 삭제할 수 없습니다.\n", index);
         exit(EXIT_FAILURE);
     }
-
+    
     Node* search = getNodeAt(index - 1);
     Node* target = search->link;
     T deletedData;
-
+    
     deletedData = target->data;
     search->link = target->link;
-
+    
     if(target == current) {
         current = search;
     }
     
     delete target;
-
+    
     size--;
     return deletedData;
 }
@@ -218,14 +218,14 @@ T LinkedList<T>::remove(void) {
         fprintf(stderr, "first(), next()를 통해 참조 위치를 설정하세요");
         exit(EXIT_FAILURE);
     }
-
+    
     T target;
     target = current->data;
     previous->link = current->link;
     
     delete current;
     current = previous;
-
+    
     size--;
     return target;
 }
@@ -250,7 +250,7 @@ template <typename T>
 int LinkedList<T>::indexOf(T item) {
     int index = 0;
     Node* search = head;
-
+    
     while(search->link != NULL) {
         search = search->link;
         if(search->data == item) {
@@ -266,7 +266,7 @@ int LinkedList<T>::lastIndexOf(T item) {
     int index = 0;
     int result = -1;
     Node* search = head;
-
+    
     while(search->link != NULL) {
         search = search->link;
         if(search->data == item) {
@@ -274,7 +274,7 @@ int LinkedList<T>::lastIndexOf(T item) {
         }
         index++;
     }
-
+    
     return result;
 }
 
@@ -289,10 +289,10 @@ T LinkedList<T>::next(void) {
         fprintf(stderr, "참조할 다음 데이터가 없습니다.\n");
         exit(EXIT_FAILURE);
     }
-
+    
     previous = current;
     current = current->link;
-
+    
     return current->data;
 }
 
@@ -302,25 +302,25 @@ T LinkedList<T>::first(void) {
         fprintf(stderr, "저장된 데이터가 없습니다.\n");
         exit(EXIT_FAILURE);
     }
-
+    
     previous = head;
     current = head->link;
-
+    
     return current->data;
 }
 
 template <typename T>
 void LinkedList<T>::sort(int (*compare)(const void *, const void *)) {
     LinkedList temp;
-//    this->compare = compare;
+    //    this->compare = compare;
     temp.compare = compare;
     
     Node* search = head;
     while(search->link != NULL) {
         search = search->link;
-        temp.addToSort(search->data); 
+        temp.addToSort(search->data);
     }
-
+    
     std::swap(temp.head, head);
 }
 
