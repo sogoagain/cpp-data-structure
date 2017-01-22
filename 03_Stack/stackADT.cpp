@@ -7,7 +7,8 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "ArrayBaseStack/ArrayBaseStack.hpp"
+//#include "ArrayBaseStack/ArrayBaseStack.hpp"
+#include "ListBaseStack/ListBaseStack.hpp"
 
 
 
@@ -27,7 +28,7 @@ int main(int argc, char** argv) {
     printf("---stack1 peek data---\n");
     printf("%d\n", stack1.peek());
     printf("---------------------\n\n");
-    
+        
     printf("---stack2 = stack1---\n");
     stack2 = stack1;
     
