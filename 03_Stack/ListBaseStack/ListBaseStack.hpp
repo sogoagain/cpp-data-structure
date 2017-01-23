@@ -100,7 +100,7 @@ public:
             exit(EXIT_FAILURE);
         }
         
-        return head->data;
+        return (head->rightLink)->data;
     }
 };
 
