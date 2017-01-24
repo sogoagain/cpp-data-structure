@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include "ExpressionConverter.hpp"
+#include "PostfixCalculator.hpp"
 
 int main(int argc, char** argv) {
     if(argc != 2) {
@@ -18,4 +19,10 @@ int main(int argc, char** argv) {
     converter.convertInfixToPostfix();
     
     printf("%s의 후위 표기식은 %s입니다.\n",converter.getInfix(), converter.getPostfix());
+    
+    PostfixCalculator calculator(converter.getPostfix());
+    calculator.calculate();
+    
+    printf("계산 결과: %lf\n", calculator.getResult());
+    
 }

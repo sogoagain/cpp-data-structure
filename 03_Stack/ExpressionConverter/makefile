@@ -1,6 +1,6 @@
 all: infixToPostfixTest
 
-HEADER = ../ListBaseStack/ListBaseStack.hpp
+HEADER = ../ListBaseStack/ListBaseStack.hpp ExpressionConverter.hpp postfixCalculator.hpp
 
-infixToPostfixTest: infixToPostfixTest.cpp ExpressionConverter.hpp $(HEADER)
+infixToPostfixTest: infixToPostfixTest.cpp $(HEADER)
 	g++ -o infixToPostfixTest infixToPostfixTest.cpp

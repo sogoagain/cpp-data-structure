@@ -11,21 +11,22 @@
 #include <iostream>
 #include <string.h>
 #include "../ListBaseStack/ListBaseStack.hpp"
+using namespace std;
 
 class ExpressionConverter {
 private:
     char* infix;
     char* postfix;
-    Stack<char>* stack;
     
     int getOperatorPrecedence(char);
     bool compareOperatorPrecedence(char, char);
     
 public:
-    ExpressionConverter(char*);
+    ExpressionConverter(char* = NULL);
     ~ExpressionConverter();
     
     void convertInfixToPostfix(void);
+    void setInfix(char*);
     char* getInfix(void);
     char* getPostfix(void);
 };
@@ -52,18 +53,22 @@ bool ExpressionConverter::compareOperatorPrecedence(char op1, char op2) {
 }
 
 ExpressionConverter::ExpressionConverter(char* infix) {
-    this->infix = new char[strlen(infix)+1];
-    strcpy(this->infix, infix);
+    if(infix != NULL) {
+        this->infix = new char[strlen(infix)+1];
+        strcpy(this->infix, infix);
+    } else {
+        infix = NULL;
+    }
     
     postfix = NULL;
-    stack = new Stack<char>;
 }
 
 ExpressionConverter::~ExpressionConverter() {
-    delete[] infix;
-    delete stack;
+    if(infix != NULL) {
+        delete[] infix;
+    }
     if(postfix != NULL) {
-        delete postfix;
+        delete[] postfix;
     }
 }
 
@@ -76,6 +81,7 @@ void ExpressionConverter::convertInfixToPostfix(void) {
         delete postfix;
     }
     
+    Stack<char> stack;
     size_t length = strlen(infix);
     postfix = new char[length + length/2 + 1];
     
@@ -85,35 +91,44 @@ void ExpressionConverter::convertInfixToPostfix(void) {
         
         switch(token) {
             case '+': case'-': case'*': case'/':
-                while(!stack->isEmpty() && compareOperatorPrecedence(stack->peek(), token)) {
+                while(!stack.isEmpty() && compareOperatorPrecedence(stack.peek(), token)) {
                     postfix[j++] = ' ';
-                    postfix[j++] = stack->pop();
+                    postfix[j++] = stack.pop();
                 }
                 postfix[j++] = ' ';
-                stack->push(token);
+                stack.push(token);
                 break;
             case '(':
-                stack->push(token);
+                stack.push(token);
                 break;
             case ')':
-                while(!stack->isEmpty() && stack->peek() != '(') {
+                while(!stack.isEmpty() && stack.peek() != '(') {
                     postfix[j++] = ' ';
-                    postfix[j++] = stack->pop();
+                    postfix[j++] = stack.pop();
                 }
-                stack->pop();
+                stack.pop();
                 break;
             default:
-                if(isdigit(token)) {
+                if(isdigit(token) || token == '.') {
                     postfix[j++] = token;
                 }
                 break;
         }
     }
     
-    while(!stack->isEmpty()) {
+    while(!stack.isEmpty()) {
         postfix[j++] = ' ';
-        postfix[j++] = stack->pop();
+        postfix[j++] = stack.pop();
     }
+}
+
+void ExpressionConverter::setInfix(char* infix) {
+    if(infix != NULL) {
+        delete infix;
+    }
+    
+    this->infix = new char[strlen(infix)+1];
+    strcpy(this->infix, infix);
 }
 
 char* ExpressionConverter::getInfix() {
