@@ -111,6 +111,10 @@ void ExpressionConverter::convertInfixToPostfix(void) {
             default:
                 if(isdigit(token) || token == '.') {
                     postfix[j++] = token;
+                } else {
+                    fprintf(stderr, "수식에 알 수 없는 기호가 포함되어있습니다.\n");
+                    exit(EXIT_FAILURE);
+                    break;
                 }
                 break;
         }

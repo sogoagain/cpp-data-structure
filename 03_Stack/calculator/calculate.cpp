@@ -1,8 +1,8 @@
 //
-//  InfixToPostfixTest.cpp
+//  calculate.cpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 1. 23..
+//  Created by sogoesagain on 2017. 1. 24..
 //
 
 #include <stdio.h>
@@ -11,18 +11,15 @@
 
 int main(int argc, char** argv) {
     if(argc != 2) {
-        fprintf(stderr, "Usage: [%s] [EXPRESSION] \n", argv[0]);
+        fprintf(stderr, "Usage: [%s] [\"exp\"] \n", argv[0]);
         exit(EXIT_FAILURE);
     }
     
     ExpressionConverter converter(argv[1]);
     converter.convertInfixToPostfix();
     
-    printf("%s의 후위 표기식은 %s입니다.\n",converter.getInfix(), converter.getPostfix());
-    
     PostfixCalculator calculator(converter.getPostfix());
     calculator.calculate();
     
-    printf("계산 결과: %lf\n", calculator.getResult());
-    
+    printf("%lf\n", calculator.getResult());
 }
