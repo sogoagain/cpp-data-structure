@@ -10,12 +10,12 @@
 
 #include <algorithm>
 
-#define MAX_SIZE 100
 using namespace std;
 
 template <typename E>
 class Stack {
 private:
+    static const int MAX_SIZE = 100;
     E* storage;
     int maxSize;
     int top;
@@ -40,7 +40,7 @@ public:
         }
     }
     ~Stack() {
-        delete []storage;
+        delete[] storage;
     }
     Stack<E>& operator=(const Stack<E>& reference) {
         Stack temp = reference;
