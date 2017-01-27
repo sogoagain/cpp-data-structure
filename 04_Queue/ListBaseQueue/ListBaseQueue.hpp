@@ -76,8 +76,8 @@ public:
         return (head->rightLink == tail);
     }
     void offer(E item) {
-        head->rightLink->leftLink = new Node(item, head, head->rightLink);
-        head->rightLink = head->rightLink->leftLink;
+        tail->leftLink->rightLink = new Node(item, tail->leftLink, tail);
+        tail->leftLink = tail->leftLink->rightLink;
     }
     E poll(void) {
         if(isEmpty()) {
@@ -86,12 +86,12 @@ public:
         }
         
         Node* target = head->rightLink;
-        E targetItem = target->data;
+        E poppedItem = target->data;
         
-        tail->leftLink = target->leftLink;
+        head->rightLink = target->rightLink;
         
         delete target;
-        return targetItem;
+        return poppedItem;
         
     }
     E peek(void) {
@@ -103,5 +103,6 @@ public:
         return (head->rightLink)->data;
     }
 };
+
 
 #endif /* ListBaseQueue_h */
