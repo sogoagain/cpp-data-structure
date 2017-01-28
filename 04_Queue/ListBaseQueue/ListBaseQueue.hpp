@@ -49,12 +49,12 @@ public:
         tail->leftLink = head;
         tail->rightLink = NULL;
         
-        Node* search = copy.tail;
+        Node* search = copy.head;
         
-        while(search->leftLink != copy.head) {
-            search = search->leftLink;
-            head->rightLink->leftLink = new Node(search->data, head, head->rightLink);
-            head->rightLink = head->rightLink->leftLink;
+        while(search->rightLink != copy.tail) {
+            search = search->rightLink;
+            tail->leftLink->rightLink = new Node(search->data, tail->leftLink, tail);
+            tail->leftLink = tail->leftLink->rightLink;
         }
     }
     ~Queue() {
