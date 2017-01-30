@@ -34,22 +34,7 @@ private:
     bool verifyReferenceScope(int index);
     bool isPossibleToAdd(int index);
     void addToSort(T item);
-    Node* getNodeAt(int index)  {
-        if(index == -1) {
-            return head;
-        }
-        
-        if(!verifyReferenceScope(index)) {
-            fprintf(stderr, "index[%d] 노드를 참조할 수 없습니다.\n",index);
-            exit(EXIT_FAILURE);
-        }
-        
-        Node* search = head;
-        for(int i = 0; i <= index; i++) {
-            search = search->link;
-        }
-        return search;
-    }
+    Node* getNodeAt(int index);
     
 public:
     LinkedList();
@@ -99,6 +84,24 @@ void LinkedList<T>::addToSort(T item) {
     search->link = new Node(item, search->link);
     size++;
     return;
+}
+
+template <typename T>
+typename LinkedList<T>::Node* LinkedList<T>::getNodeAt(int index)  {
+    if(index == -1) {
+        return head;
+    }
+    
+    if(!verifyReferenceScope(index)) {
+        fprintf(stderr, "index[%d] 노드를 참조할 수 없습니다.\n",index);
+        exit(EXIT_FAILURE);
+    }
+    
+    Node* search = head;
+    for(int i = 0; i <= index; i++) {
+        search = search->link;
+    }
+    return search;
 }
 
 template <typename T>

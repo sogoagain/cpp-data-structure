@@ -142,7 +142,7 @@ int main(int argc, char** argv) {
     List list4 = list1;
     printf("list4.sort(compare)\n");
     list4.sort(compare);
-    
+
     printf("list4 print using iterator\n");
     for(List::iterator i = list4.begin(); i != list4.end(); ++i) {
         printf("%d ", *i);
@@ -150,6 +150,6 @@ int main(int argc, char** argv) {
     printf("\n---printf finished--\n");
     
     printf("list4.getItem(list4.getSize()-5): %d\n",list4.getItem(list4.getSize()-5));
-    
+
     return 0;
 }

@@ -25,6 +25,7 @@ private:
     public:
         Node(void) {
             rightLink = NULL;
+            leftLink = NULL;
         }
         Node(E item, Node* previous, Node* next): data(item), rightLink(next), leftLink(previous) { }
     };
@@ -34,36 +35,26 @@ private:
     
 public:
     Queue() {
-        head = new Node();  // 더미노드 추가
-        tail = new Node();
-        head->leftLink = NULL;
-        head->rightLink = tail;
-        tail->leftLink = head;
-        tail->rightLink = NULL;
+        head = NULL;
+        tail = NULL;
     }
     Queue(const Queue<E>& copy) {
-        head = new Node();  // 더미노드 추가
-        tail = new Node();
-        head->leftLink = NULL;
-        head->rightLink = tail;
-        tail->leftLink = head;
-        tail->rightLink = NULL;
+        head = NULL;
+        tail = NULL;
         
         Node* search = copy.head;
         
-        while(search->rightLink != copy.tail) {
+        while(search != NULL) {
+            this->offer(search->data);
             search = search->rightLink;
-            tail->leftLink->rightLink = new Node(search->data, tail->leftLink, tail);
-            tail->leftLink = tail->leftLink->rightLink;
         }
     }
     ~Queue() {
-        while(head->rightLink != NULL) {
-            Node* temp = head->rightLink;
-            head->rightLink = temp->rightLink;
+        while(head != NULL) {
+            Node* temp = head;
+            head = temp->rightLink;
             delete temp;
         }
-        delete head;
     }
     Queue<E>& operator=(const Queue<E>& reference) {
         Queue<E> temp = reference;
@@ -73,11 +64,16 @@ public:
     }
     
     bool isEmpty(void) {
-        return (head->rightLink == tail);
+        return (head == NULL);
     }
     void offer(E item) {
-        tail->leftLink->rightLink = new Node(item, tail->leftLink, tail);
-        tail->leftLink = tail->leftLink->rightLink;
+        tail = new Node(item, tail, NULL);
+        
+        if(head == NULL) {
+            head = tail;
+        } else {
+            tail->leftLink->rightLink = tail;
+        }
     }
     E poll(void) {
         if(isEmpty()) {
@@ -85,13 +81,13 @@ public:
             exit(EXIT_FAILURE);
         }
         
-        Node* target = head->rightLink;
-        E poppedItem = target->data;
+        Node* target = head;
+        E polledItem = target->data;
         
-        head->rightLink = target->rightLink;
+        head = target->rightLink;
         
         delete target;
-        return poppedItem;
+        return polledItem;
         
     }
     E peek(void) {
@@ -100,7 +96,7 @@ public:
             exit(EXIT_FAILURE);
         }
         
-        return (head->rightLink)->data;
+        return head->data;
     }
 };
 

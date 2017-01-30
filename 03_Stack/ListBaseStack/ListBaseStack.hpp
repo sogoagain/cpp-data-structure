@@ -34,36 +34,26 @@ private:
     
 public:
     Stack() {
-        head = new Node();  // 더미노드 추가
-        tail = new Node();
-        head->leftLink = NULL;
-        head->rightLink = tail;
-        tail->leftLink = head;
-        tail->rightLink = NULL;
+        head = NULL;
+        tail = NULL;
     }
     Stack(const Stack<E>& copy) {
-        head = new Node();  // 더미노드 추가
-        tail = new Node();
-        head->leftLink = NULL;
-        head->rightLink = tail;
-        tail->leftLink = head;
-        tail->rightLink = NULL;
+        head = NULL;
+        tail = NULL;
         
         Node* search = copy.tail;
         
-        while(search->leftLink != copy.head) {
+        while(search != NULL) {
+            this->push(search->data);
             search = search->leftLink;
-            head->rightLink->leftLink = new Node(search->data, head, head->rightLink);
-            head->rightLink = head->rightLink->leftLink;
         }
     }
     ~Stack() {
-        while(head->rightLink != NULL) {
-            Node* temp = head->rightLink;
-            head->rightLink = temp->rightLink;
+        while(head != NULL) {
+            Node* temp = head;
+            head = temp->rightLink;
             delete temp;
         }
-        delete head;
     }
     Stack<E>& operator=(const Stack<E>& reference) {
         Stack<E> temp = reference;
@@ -73,11 +63,16 @@ public:
     }
     
     bool isEmpty(void) {
-        return (head->rightLink == tail);
+        return (head == NULL);
     }
     void push(E item) {
-        head->rightLink->leftLink = new Node(item, head, head->rightLink);
-        head->rightLink = head->rightLink->leftLink;
+        head = new Node(item, NULL, head);
+        
+        if(tail == NULL) {
+            tail = head;
+        } else {
+            head->rightLink->leftLink = head;
+        }
     }
     E pop(void) {
         if(isEmpty()) {
@@ -85,10 +80,10 @@ public:
             exit(EXIT_FAILURE);
         }
         
-        Node* target = head->rightLink;
+        Node* target = head;
         E poppedItem = target->data;
         
-        head->rightLink = target->rightLink;
+        head = target->rightLink;
         
         delete target;
         return poppedItem;
@@ -100,7 +95,7 @@ public:
             exit(EXIT_FAILURE);
         }
         
-        return (head->rightLink)->data;
+        return head->data;
     }
 };
 
