@@ -86,6 +86,10 @@ public:
         
         head = target->rightLink;
         
+        if(head == NULL) {
+            tail = NULL;
+        }
+        
         delete target;
         return polledItem;
         

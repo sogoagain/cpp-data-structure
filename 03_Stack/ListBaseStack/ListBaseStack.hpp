@@ -85,6 +85,10 @@ public:
         
         head = target->rightLink;
         
+        if(tail == NULL) {
+            head = NULL;
+        }
+        
         delete target;
         return poppedItem;
         
