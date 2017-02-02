@@ -9,6 +9,7 @@
 #define ListBaseQueue_h
 
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -32,21 +33,25 @@ private:
     
     Node* head;
     Node* tail;
+    int size;
     
 public:
     Queue() {
         head = NULL;
         tail = NULL;
+        size = 0;
     }
     Queue(const Queue<E>& copy) {
         head = NULL;
         tail = NULL;
+        size = 0;
         
         Node* search = copy.head;
         
         while(search != NULL) {
             this->offer(search->data);
             search = search->rightLink;
+            size++;
         }
     }
     ~Queue() {
@@ -58,6 +63,7 @@ public:
     }
     Queue<E>& operator=(const Queue<E>& reference) {
         Queue<E> temp = reference;
+        size = temp.size;
         std::swap(temp.head, head);
         std::swap(temp.tail, tail);
         return *this;
@@ -74,6 +80,8 @@ public:
         } else {
             tail->leftLink->rightLink = tail;
         }
+        
+        size++;
     }
     E poll(void) {
         if(isEmpty()) {
@@ -90,6 +98,7 @@ public:
             tail = NULL;
         }
         
+        size--;
         delete target;
         return polledItem;
         
@@ -101,6 +110,9 @@ public:
         }
         
         return head->data;
+    }
+    int getSize(void) {
+        return size;
     }
 };
 
