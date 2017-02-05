@@ -9,15 +9,14 @@
 #include "../../03_Stack/calculator/ExpressionConverter.hpp"
 
 int main(int argc, char** argv) {
-    /*
-     if(argc != 2) {
-     fprintf(stderr, "Usage: [%s] [\"exp\"] \n", argv[0]);
-     exit(EXIT_FAILURE);
-     }
-     */
     
-    //ExpressionConverter converter(argv[1]);
-    ExpressionConverter converter("(1.2 + 3.3)*4 - 12");
+    if(argc != 2) {
+        fprintf(stderr, "Usage: [%s] [\"exp\"] \n", argv[0]);
+        exit(EXIT_FAILURE);
+    }
+    
+    
+    ExpressionConverter converter(argv[1]);
     converter.convertInfixToPostfix();
     
     ExpressionTree expressionTree(converter.getPostfix());
