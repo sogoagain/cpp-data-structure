@@ -13,7 +13,7 @@ using namespace std;
 
 template <typename E>
 class BinaryTree {
-private:
+protected:
     E data;
     BinaryTree* left;
     BinaryTree* right;

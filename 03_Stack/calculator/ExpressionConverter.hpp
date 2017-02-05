@@ -108,6 +108,8 @@ void ExpressionConverter::convertInfixToPostfix(void) {
                 }
                 stack.pop();
                 break;
+            case ' ':
+                break;
             default:
                 if(isdigit(token) || token == '.') {
                     postfix[j++] = token;

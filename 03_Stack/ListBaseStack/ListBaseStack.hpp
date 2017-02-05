@@ -85,8 +85,8 @@ public:
         
         head = target->rightLink;
         
-        if(tail == NULL) {
-            head = NULL;
+        if(head == NULL) {
+            tail = NULL;
         }
         
         delete target;
