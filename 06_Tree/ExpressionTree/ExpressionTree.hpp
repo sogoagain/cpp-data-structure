@@ -22,7 +22,7 @@ private:
     
 public:
     ExpressionTree(char*);
-    int evaluate(void);
+    double evaluate(void);
     
     void printPrefixExpression(void);
     void printInfixExpression(void);
@@ -83,7 +83,37 @@ ExpressionTree::ExpressionTree(char* postfix) {
     data = root->data;
 }
 
-int ExpressionTree::evaluate(void) {
+double ExpressionTree::evaluate(void) {
+    double op1, op2;
+    
+    if(left == NULL && right == NULL) {
+        return data;
+    }
+    
+    op1 = ((ExpressionTree*)left)->evaluate();
+    op2 = ((ExpressionTree*)right)->evaluate();
+    
+    switch(oper) {
+        case'+':
+            return op1 + op2;
+            break;
+        case'-':
+            return op1 - op2;
+            break;
+        case'*':
+            return op1 * op2;
+            break;
+        case'/':
+            if(op2 == 0) {
+                fprintf(stderr, "0으로 나눌 수 없습니다.\n");
+                exit(EXIT_FAILURE);
+            }
+            return op1 / op2;
+            break;
+        default:
+            break;
+            
+    }
     return 0;
 }
 

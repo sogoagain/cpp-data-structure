@@ -17,19 +17,24 @@ int main(int argc, char** argv) {
      */
     
     //ExpressionConverter converter(argv[1]);
-    ExpressionConverter converter("(1.2 + 3.2)*4 - 12");
+    ExpressionConverter converter("(1.2 + 3.3)*4 - 12");
     converter.convertInfixToPostfix();
     
     ExpressionTree expressionTree(converter.getPostfix());
     
+    printf("전위 표기식: ");
     expressionTree.printPrefixExpression();
     printf("\n");
     
+    printf("중위 표기식: ");
     expressionTree.printInfixExpression();
     printf("\n");
     
+    printf("후위 표기식: ");
     expressionTree.printPostfixExpression();
     printf("\n");
+    
+    printf("계산 결과: %.2lf\n", expressionTree.evaluate());
     
     return 0;
 }
