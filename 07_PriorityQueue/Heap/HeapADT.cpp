@@ -8,13 +8,26 @@
 #include "Heap.hpp"
 
 int getPriority(char data1, char data2) {
-    return data1- data2;
+    return data2 - data1;
 }
 
 int main(int argc, char** argv) {
-    Heap<int> heap(100, getPriority);
+    Heap<char> heap(6, getPriority);
     
+    heap.add('A');
+    heap.add('B');
+    heap.add('C');
+    printf("%c\n", heap.remove());
     
+    heap.add('A');
+    heap.add('B');
+    heap.add('C');
+    printf("%c\n", heap.remove());
+    
+    while(!heap.isEmpty()) {
+        printf("%c ", heap.remove());
+    }
+    printf("\n");
     
     return 0;
 }
