@@ -115,5 +115,14 @@ public:
         }
         return deletedData;
     }
+    
+    E getRoot(void) {
+        if(isEmpty()) {
+            fprintf(stderr, "Heap이 비어있습니다.\n");
+            exit(EXIT_FAILURE);
+        }
+        
+        return heapArray[1];
+    }
 };
 #endif /* Heap_hpp */
