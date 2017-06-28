@@ -2,7 +2,7 @@
 //  Customer.hpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 2. 2..
+//  Created by sogoagain on 2017. 2. 2..
 //
 
 #ifndef Customer_hpp

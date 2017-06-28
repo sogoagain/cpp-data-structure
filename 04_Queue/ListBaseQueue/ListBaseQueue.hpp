@@ -2,7 +2,7 @@
 //  ListBaseQueue.hpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 1. 26..
+//  Created by sogoagain on 2017. 1. 26..
 //
 
 #ifndef ListBaseQueue_h

@@ -2,7 +2,7 @@
 //  Heap.cpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 2. 9..
+//  Created by sogoagain on 2017. 2. 9..
 //
 
 #include "Heap.hpp"

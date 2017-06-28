@@ -2,7 +2,7 @@
 //  Heap.hpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 2. 9..
+//  Created by sogoagain on 2017. 2. 9..
 //
 
 #ifndef Heap_hpp

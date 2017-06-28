@@ -2,7 +2,7 @@
 //  PriorityQueue.hpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 2. 11..
+//  Created by sogoagain on 2017. 2. 11..
 //
 
 #ifndef PriorityQueue_hpp

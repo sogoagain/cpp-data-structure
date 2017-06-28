@@ -2,7 +2,7 @@
 //  DequeADT.cpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 2. 1..
+//  Created by sogoagain on 2017. 2. 1..
 //
 
 #include <stdio.h>

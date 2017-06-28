@@ -2,7 +2,7 @@
 //  ExpressionTree.cpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 2. 5..
+//  Created by sogoagain on 2017. 2. 5..
 //
 
 #include "ExpressionTree.hpp"

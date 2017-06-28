@@ -2,7 +2,7 @@
 //  CircularQueue.hpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 1. 25..
+//  Created by sogoagain on 2017. 1. 25..
 //
 
 #ifndef CircularQueue_h

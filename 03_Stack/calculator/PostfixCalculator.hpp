@@ -2,7 +2,7 @@
 //  PostfixCalculator.hpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 1. 24..
+//  Created by sogoagain on 2017. 1. 24..
 //
 
 #ifndef PostfixCalculator_h

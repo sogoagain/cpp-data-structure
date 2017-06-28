@@ -2,7 +2,7 @@
 //  ListBaseStack.hpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 1. 22..
+//  Created by sogoagain on 2017. 1. 22..
 //
 
 #ifndef ListBaseStack_h

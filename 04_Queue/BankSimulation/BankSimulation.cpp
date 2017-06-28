@@ -2,7 +2,7 @@
 //  BankSimulation.cpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 2. 2..
+//  Created by sogoagain on 2017. 2. 2..
 //
 
 #include <stdio.h>

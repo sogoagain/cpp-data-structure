@@ -2,7 +2,7 @@
 //  ExpressionConverter.hpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 1. 23..
+//  Created by sogoagain on 2017. 1. 23..
 //
 
 #ifndef ExpressionConverter_h

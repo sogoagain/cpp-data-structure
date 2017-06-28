@@ -2,7 +2,7 @@
 //  ArrayBaseStack.hpp
 //  DataStructure
 //
-//  Created by sogoesagain on 2017. 1. 21..
+//  Created by sogoagain on 2017. 1. 21..
 //
 
 #ifndef ArrayBaseStack_h
